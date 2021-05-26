@@ -1,26 +1,44 @@
+const { join } = require('path');
 exports.config = {
     // ====================
     // Runner and framework
     // Configuration
     // ====================
-    runner: 'local',
-    framework: 'jasmine',
-    jasmineNodeOpts: {
-        // Updated the timeout to 30 seconds due to possible longer appium calls
-        // When using XPATH
-        defaultTimeoutInterval: 90000,
-        helpers: [require.resolve('@babel/register')],
+       runner: 'local',
+ 
+    exclude: [
+        // 'path/to/excluded/files'
+    ],
+
+    framework: 'mocha',
+    mochaOpts: {
+        ui: 'bdd',
+        timeout: 60000,
+        require: ['@babel/register'],
+     //  helpers: [require.resolve('@babel/register')]
     },
+
     sync: true,
-    logLevel: 'silent',
+    logLevel: 'trace', 
     deprecationWarnings: true,
     bail: 0,
-    baseUrl: 'http://the-internet.herokuapp.com',
     waitforTimeout: 10000,
     connectionRetryTimeout: 90000,
     connectionRetryCount: 3,
-    reporters: ['spec'],
+    reporters: [
+        'spec', [
+            'allure', {
+                outputDir: './reports/allure/allure-results'
+            }
+        ], [
+            'json', {
+                outputDir: './reports/json/json-results'
+            }
+        ]
+    ],
 
+
+     
     // ====================
     // Appium Configuration
     // ====================
@@ -42,4 +60,6 @@ exports.config = {
         ],
     ],
     port: 4723,
+
+    
 };
